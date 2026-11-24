@@ -134,6 +134,7 @@ def _system_prompt() -> str:
         "seguido de los bloques json. "
         "NUNCA enumeres vuelos ni dias en el texto y NUNCA omitas el bloque flights si consultaste vuelos. "
         "Si el usuario pidio clima, SIEMPRE emite el bloque weather con una entrada por dia (fecha, condicion, temperaturas); si el especialista no da todos los dias, repite la consulta dia por dia. En flights, airline es obligatorio: copia el nombre de la aerolinea tal como lo devolvio el especialista. "
+        "En los bloques trips, itinerary y reservations copia los objetos que devolvio la tool tal cual, sin quitar campos, incluyendo tripId y reservationId. "
         "Si no hay datos que mostrar, no agregues bloques."
     )
 
@@ -145,22 +146,25 @@ async def invoke(payload, context):
         raise ValueError("prompt debe ser un string")
     user_id = _user_id(payload, context)
     trip_tools.STATE["allow_write"] = bool(re.search(WRITE_INTENT, prompt.lower()))
-    sid = getattr(context, 'session_id', None) or 'default'
-    key = (user_id, sid)
-    agent = AGENTS.get(key)
-    if agent is None:
-        agent = Agent(
-            name='Trip Planner Orchestrator',
-            model=load_model(),
-            system_prompt=_system_prompt(),
-            tools=[ask_flights, ask_weather, *build_trip_tools(user_id)],
-            callback_handler=None,
-        )
-        AGENTS[key] = agent
-    async for event in agent.stream_async(prompt):
+    history = payload.get("history", []) if isinstance(payload, dict) else []
+    lines = []
+    for m in (history if isinstance(history, list) else [])[-6:]:
+        if isinstance(m, dict) and m.get("role") in ("user", "assistant") and isinstance(m.get("text"), str):
+            who = "Usuario" if m["role"] == "user" else "Asistente"
+            lines.append(who + ": " + m["text"][:3000])
+    full = prompt
+    if lines:
+        full = "Conversacion previa:\n" + "\n".join(lines) + "\n\nMensaje actual del usuario: " + prompt
+    agent = Agent(
+        name="Trip Planner Orchestrator",
+        model=load_model(),
+        system_prompt=_system_prompt(),
+        tools=[ask_flights, ask_weather, *build_trip_tools(user_id)],
+        callback_handler=None,
+    )
+    async for event in agent.stream_async(full):
         if "data" in event:
             yield event["data"]
-
 
 if __name__ == "__main__":
     app.run()

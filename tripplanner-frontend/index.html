@@ -39,18 +39,19 @@ const money=(n,c="COP")=>{if(n==null)return "-";try{return new Intl.NumberFormat
 const ST={SIMULADA:"Simulada",PENDIENTE:"Pendiente",CONFIRMADA:"Confirmada"};
 const L=d=>[].concat(d||[]);
 const R={
-trips:d=>L(d).map(t=>`<div class="card"><b>${esc(t.destination)}</b> <span class="mut">desde ${esc(t.origin)}</span><br>${esc(t.start_date)} → ${esc(t.end_date)} · ${esc(t.travelers)} viajeros<br>Presupuesto: ${money(t.budget)}<br><small class="mut">ID ${esc(t.tripId)}</small></div>`).join(""),
+trips:d=>L(d).map(t=>`<div class="card"><b>${esc(t.destination)}</b> <span class="mut">desde ${esc(t.origin)}</span><br>${esc(t.start_date)} → ${esc(t.end_date)} · ${esc(t.travelers)} viajeros<br>Presupuesto: ${money(t.budget)}<br>${(t.tripId||t.id||t.trip_id)?`<small class="mut">ID ${esc(t.tripId||t.id||t.trip_id)}</small>`:""}</div>`).join(""),
 flights:d=>`<div class="grid">${L(d).map(f=>`<div class="card"><b>${esc(f.airline)}</b><br>Ida: ${esc(f.departure)} → ${esc(f.arrival)}<br>${f.return_departure?`Vuelta: ${esc(f.return_departure)} → ${esc(f.return_arrival)}<br>`:""}<b>${money(f.price_total??f.price,f.currency||"COP")}</b>${f.travelers?` <small class="mut">total ${esc(f.travelers)} pers.</small>`:""}</div>`).join("")}</div>`,
 weather:d=>`<div class="grid">${L(d).map(w=>`<div class="card"><b>${esc(w.date)}</b><br>${esc(w.condition??"-")}<br>${w.temp_min==null?"":esc(w.temp_min)+"° / "}${esc(w.temp_max??"?")}°<br>Lluvia: ${w.rain_probability==null?"s/d":esc(w.rain_probability)+"%"}</div>`).join("")}</div>`,
 itinerary:d=>L(d.days||d).map(x=>`<div class="card"><b>${esc(x.date)}</b>${L(x.activities).map(a=>`<div>${esc(a.time)} · <b>${esc(a.title)}</b> <small class="mut">${esc(a.description)}</small></div>`).join("")}</div>`).join(""),
 reservations:d=>L(d).map(r=>`<div class="card row"><div><b>${esc(r.title)}</b> <small class="mut">${esc(r.type)}</small><br><small>${esc(r.provider||"")} ${esc(r.date||"")} ${r.price!=null?money(r.price):""} · viaje ${esc(r.tripId)}</small></div><span class="badge ${esc(r.status)}">${ST[r.status]||esc(r.status)}</span></div>`).join("")};
+const HIST=[];
 let token=sessionStorage.getItem("tp_token")||"";
 const sid=()=>{let s=sessionStorage.getItem("tp_sid");if(!s){s="sesion-"+[...crypto.getRandomValues(new Uint8Array(16))].map(b=>b.toString(16).padStart(2,"0")).join("")+"-web";sessionStorage.setItem("tp_sid",s)}return s};
 async function login(e){e.preventDefault();$("#err").textContent="";
 try{const r=await fetch(`https://cognito-idp.${CFG.region}.amazonaws.com/`,{method:"POST",headers:{"Content-Type":"application/x-amz-json-1.1","X-Amz-Target":"AWSCognitoIdentityProviderService.InitiateAuth"},body:JSON.stringify({AuthFlow:"USER_PASSWORD_AUTH",ClientId:CFG.clientId,AuthParameters:{USERNAME:$("#em").value,PASSWORD:$("#pw").value}})});
 const d=await r.json();if(!r.ok)throw new Error(d.message||"Credenciales inválidas");
 token=d.AuthenticationResult.IdToken;sessionStorage.setItem("tp_token",token);start()}catch(x){$("#err").textContent=x.message}}
-function logout(){token="";sessionStorage.clear();$("#app").hidden=true;$("#login").hidden=false}
+function logout(){HIST.length=0;token="";sessionStorage.clear();$("#app").hidden=true;$("#login").hidden=false}
 function start(){$("#login").hidden=true;$("#app").hidden=false;loadTrips();loadRes()}
 async function api(p){const r=await fetch(CFG.api+p,{headers:{Authorization:"Bearer "+token}});
 if(r.status==401){logout();throw new Error("Sesión vencida")}
@@ -66,14 +67,14 @@ const piece=ev=>ev.split("\n").filter(l=>l.startsWith("data:")).map(l=>{const v=
 const cards=t=>[...t.matchAll(/```json\s*([\s\S]*?)```/g)].map(m=>{try{const j=JSON.parse(m[1]);return R[j.type]?R[j.type](j.data):""}catch(e){console.warn("JSON de tarjeta invalido",m[1],e);return ""}}).join("");
 async function send(){const inp=$("#msg"),q=inp.value.trim();if(!q)return;inp.value="";
 add("u",esc(q));const out=add("b","<i class='mut'>Pensando…</i>");let txt="";
-try{const r=await fetch(AGENT_URL,{method:"POST",headers:{Authorization:"Bearer "+token,"Content-Type":"application/json","X-Amzn-Bedrock-AgentCore-Runtime-Session-Id":sid()},body:JSON.stringify({prompt:q})});
+try{const r=await fetch(AGENT_URL,{method:"POST",headers:{Authorization:"Bearer "+token,"Content-Type":"application/json","X-Amzn-Bedrock-AgentCore-Runtime-Session-Id":sid()},body:JSON.stringify({prompt:q,history:HIST.slice(-6)})});
 if(r.status==401||r.status==403){logout();return}
 if(!r.ok)throw new Error("Error "+r.status);
 const rd=r.body.getReader(),dec=new TextDecoder();let buf="";
 for(;;){const{done,value}=await rd.read();if(done)break;buf+=dec.decode(value,{stream:true});
 let i;while((i=buf.indexOf("\n\n"))>=0){txt+=piece(buf.slice(0,i));buf=buf.slice(i+2)}
 out.innerHTML=fmt(txt.split("```json")[0])||"<i class='mut'>Pensando…</i>";out.scrollIntoView({block:"end"})}
-if(buf.trim())txt+=piece(buf);
+if(buf.trim())txt+=piece(buf);HIST.push({role:"user",text:q},{role:"assistant",text:txt});
 out.innerHTML=fmt(txt.replace(/```json[\s\S]*?```/g,"").trim())+cards(txt);loadTrips();loadRes()}
 catch(x){out.innerHTML=`<span class="err">${esc(x.message)}</span>`}}
 if(token)start();
