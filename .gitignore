@@ -1,0 +1,15 @@
+﻿.env.local
+.env
+*.bak
+*.cuenta-vieja
+node_modules/
+.aws-sam/
+cdk.out/
+__pycache__/
+*.pyc
+.venv/
+bucket-policy.json
+policy.json
+body.json
+
+trip-planner-a2a/

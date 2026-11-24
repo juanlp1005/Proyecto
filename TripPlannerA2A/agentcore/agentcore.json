@@ -1,0 +1,79 @@
+{
+  "$schema": "https://schema.agentcore.aws.dev/v1/agentcore.json",
+  "name": "TripPlannerA2A",
+  "version": 1,
+  "managedBy": "CDK",
+  "tags": {
+    "agentcore:created-by": "agentcore-cli",
+    "agentcore:project-name": "TripPlannerA2A"
+  },
+  "runtimes": [
+    {
+      "name": "FlightsAgent",
+      "build": "CodeZip",
+      "entrypoint": "main.py",
+      "codeLocation": "app/FlightsAgent/",
+      "runtimeVersion": "PYTHON_3_12",
+      "networkMode": "PUBLIC",
+      "protocol": "A2A"
+    },
+    {
+      "name": "WeatherAgent",
+      "build": "CodeZip",
+      "entrypoint": "main.py",
+      "codeLocation": "app/WeatherAgent/",
+      "runtimeVersion": "PYTHON_3_12",
+      "networkMode": "PUBLIC",
+      "protocol": "A2A"
+    },
+    {
+      "name": "OrchestratorAgent",
+      "build": "CodeZip",
+      "entrypoint": "main.py",
+      "codeLocation": "app/OrchestratorAgent/",
+      "runtimeVersion": "PYTHON_3_12",
+      "networkMode": "PUBLIC",
+      "protocol": "HTTP",
+      "authorizerType": "CUSTOM_JWT",
+      "authorizerConfiguration": {
+        "customJwtAuthorizer": {
+          "discoveryUrl": "https://cognito-idp.us-east-2.amazonaws.com/us-east-2_3HlYFbAcd/.well-known/openid-configuration",
+          "allowedAudience": ["30u7ace2fjpki3ka7le8eq4b4"]
+        }
+      },
+      "requestHeaderAllowlist": ["Authorization"],
+      "envVars": [
+        {
+          "name": "FLIGHTS_AGENT_ARN",
+          "value": "arn:aws:bedrock-agentcore:us-east-2:293694139479:runtime/TripPlannerA2A_FlightsAgent-9UocvYFHzw"
+        },
+        {
+          "name": "WEATHER_AGENT_ARN",
+          "value": "arn:aws:bedrock-agentcore:us-east-2:293694139479:runtime/TripPlannerA2A_WeatherAgent-Dhnxbf3fgF"
+        },
+        {
+          "name": "ALLOW_PAYLOAD_USER",
+          "value": "0"
+        }
+      ]
+    }
+  ],
+  "memories": [],
+  "knowledgeBases": [],
+  "credentials": [
+    {
+      "authorizerType": "ApiKeyCredentialProvider",
+      "name": "TripPlannerA2AGemini"
+    }
+  ],
+  "evaluators": [],
+  "onlineEvalConfigs": [],
+  "agentCoreGateways": [],
+  "policyEngines": [],
+  "configBundles": [],
+  "abTests": [],
+  "harnesses": [],
+  "datasets": [],
+  "capacityProviders": [],
+  "payments": []
+}

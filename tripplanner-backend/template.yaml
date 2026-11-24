@@ -1,0 +1,210 @@
+﻿AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: TripPlanner AI - backend serverless (Canal 1) + Cognito
+
+Parameters:
+  AllowedOrigin:
+    Type: String
+    Default: http://localhost:5173
+    Description: Origen del frontend permitido por CORS (cámbialo por tu URL de S3/CloudFront)
+
+Globals:
+  Function:
+    Runtime: python3.12
+    Timeout: 10
+    MemorySize: 256
+    CodeUri: src/
+    Environment:
+      Variables:
+        TABLE_NAME: !Ref TripPlannerTable
+
+Resources:
+  # ---------- Persistencia ----------
+  TripPlannerTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - { AttributeName: PK, AttributeType: S }
+        - { AttributeName: SK, AttributeType: S }
+      KeySchema:
+        - { AttributeName: PK, KeyType: HASH }
+        - { AttributeName: SK, KeyType: RANGE }
+
+  # ---------- Autenticación ----------
+  UserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UsernameAttributes: [email]
+      AutoVerifiedAttributes: [email]
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 8
+          RequireLowercase: true
+          RequireNumbers: true
+          RequireUppercase: false
+          RequireSymbols: false
+
+  UserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      UserPoolId: !Ref UserPool
+      GenerateSecret: false
+      ExplicitAuthFlows:
+        - ALLOW_USER_PASSWORD_AUTH
+        - ALLOW_REFRESH_TOKEN_AUTH
+
+  # ---------- API ----------
+  Api:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      CorsConfiguration:
+        AllowOrigins: [!Ref AllowedOrigin]
+        AllowHeaders: [authorization, content-type]
+        AllowMethods: [GET, POST, PUT, DELETE, OPTIONS]
+      DefaultRouteSettings:
+        ThrottlingBurstLimit: 20
+        ThrottlingRateLimit: 10
+      Auth:
+        DefaultAuthorizer: CognitoJWT
+        Authorizers:
+          CognitoJWT:
+            IdentitySource: $request.header.Authorization
+            JwtConfiguration:
+              issuer: !Sub https://cognito-idp.${AWS::Region}.amazonaws.com/${UserPool}
+              audience: [!Ref UserPoolClient]
+
+  # ---------- Lambdas (una por Tool) ----------
+  CreateTripFn:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: app.create_trip
+      Policies:
+        - DynamoDBWritePolicy: { TableName: !Ref TripPlannerTable }
+      Events:
+        Http:
+          Type: HttpApi
+          Properties: { ApiId: !Ref Api, Path: /trips, Method: POST }
+
+  GetTripsFn:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: app.get_trips
+      Policies:
+        - DynamoDBReadPolicy: { TableName: !Ref TripPlannerTable }
+      Events:
+        List:
+          Type: HttpApi
+          Properties: { ApiId: !Ref Api, Path: /trips, Method: GET }
+        One:
+          Type: HttpApi
+          Properties: { ApiId: !Ref Api, Path: "/trips/{tripId}", Method: GET }
+
+  UpdateTripFn:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: app.update_trip
+      Policies:
+        - DynamoDBReadPolicy: { TableName: !Ref TripPlannerTable }
+        - DynamoDBWritePolicy: { TableName: !Ref TripPlannerTable }
+      Events:
+        Http:
+          Type: HttpApi
+          Properties: { ApiId: !Ref Api, Path: "/trips/{tripId}", Method: PUT }
+
+  CreateItineraryFn:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: app.create_itinerary
+      Policies:
+        - DynamoDBReadPolicy: { TableName: !Ref TripPlannerTable }
+        - DynamoDBWritePolicy: { TableName: !Ref TripPlannerTable }
+      Events:
+        Http:
+          Type: HttpApi
+          Properties: { ApiId: !Ref Api, Path: "/trips/{tripId}/itinerary", Method: POST }
+
+  UpdateItineraryFn:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: app.update_itinerary
+      Policies:
+        - DynamoDBReadPolicy: { TableName: !Ref TripPlannerTable }
+        - DynamoDBWritePolicy: { TableName: !Ref TripPlannerTable }
+      Events:
+        Http:
+          Type: HttpApi
+          Properties: { ApiId: !Ref Api, Path: "/trips/{tripId}/itinerary", Method: PUT }
+
+  GetItineraryFn:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: app.get_itinerary
+      Policies:
+        - DynamoDBReadPolicy: { TableName: !Ref TripPlannerTable }
+      Events:
+        Http:
+          Type: HttpApi
+          Properties: { ApiId: !Ref Api, Path: "/trips/{tripId}/itinerary", Method: GET }
+
+  CreateReservationFn:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: app.create_reservation
+      Policies:
+        - DynamoDBReadPolicy: { TableName: !Ref TripPlannerTable }
+        - DynamoDBWritePolicy: { TableName: !Ref TripPlannerTable }
+      Events:
+        Http:
+          Type: HttpApi
+          Properties: { ApiId: !Ref Api, Path: "/trips/{tripId}/reservations", Method: POST }
+
+  GetReservationsFn:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: app.get_reservations
+      Policies:
+        - DynamoDBReadPolicy: { TableName: !Ref TripPlannerTable }
+      Events:
+        All:
+          Type: HttpApi
+          Properties: { ApiId: !Ref Api, Path: /reservations, Method: GET }
+        ByTrip:
+          Type: HttpApi
+          Properties: { ApiId: !Ref Api, Path: "/trips/{tripId}/reservations", Method: GET }
+
+  UpdateReservationFn:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: app.update_reservation
+      Policies:
+        - DynamoDBReadPolicy: { TableName: !Ref TripPlannerTable }
+        - DynamoDBWritePolicy: { TableName: !Ref TripPlannerTable }
+      Events:
+        Http:
+          Type: HttpApi
+          Properties: { ApiId: !Ref Api, Path: "/trips/{tripId}/reservations/{reservationId}", Method: PUT }
+
+  DeleteReservationFn:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: app.delete_reservation
+      Policies:
+        - DynamoDBReadPolicy: { TableName: !Ref TripPlannerTable }
+        - Statement:
+            - Effect: Allow
+              Action: dynamodb:DeleteItem
+              Resource: !GetAtt TripPlannerTable.Arn
+      Events:
+        Http:
+          Type: HttpApi
+          Properties: { ApiId: !Ref Api, Path: "/trips/{tripId}/reservations/{reservationId}", Method: DELETE }
+Outputs:
+  ApiUrl:
+    Value: !Sub https://${Api}.execute-api.${AWS::Region}.amazonaws.com
+  UserPoolId:
+    Value: !Ref UserPool
+  UserPoolClientId:
+    Value: !Ref UserPoolClient
+  TableName:
+    Value: !Ref TripPlannerTable

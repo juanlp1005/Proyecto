@@ -1,0 +1,35 @@
+{
+  "runtimes": [
+    {
+      "name": "FlightsAgent",
+      "build": "CodeZip",
+      "entrypoint": "main.py",
+      "codeLocation": "app/FlightsAgent/",
+      "runtimeVersion": "PYTHON_3_12",
+      "networkMode": "PUBLIC",
+      "protocol": "A2A"
+    },
+    {
+      "name": "WeatherAgent",
+      "build": "CodeZip",
+      "entrypoint": "main.py",
+      "codeLocation": "app/WeatherAgent/",
+      "runtimeVersion": "PYTHON_3_12",
+      "networkMode": "PUBLIC",
+      "protocol": "A2A"
+    },
+    {
+      "name": "OrchestratorAgent",
+      "build": "CodeZip",
+      "entrypoint": "main.py",
+      "codeLocation": "app/OrchestratorAgent/",
+      "runtimeVersion": "PYTHON_3_12",
+      "networkMode": "PUBLIC",
+      "protocol": "HTTP",
+      "envVars": [
+        { "name": "FLIGHTS_AGENT_URL", "value": "https://" },
+        { "name": "WEATHER_AGENT_URL", "value": "https://" }
+      ]
+    }
+  ]
+}
