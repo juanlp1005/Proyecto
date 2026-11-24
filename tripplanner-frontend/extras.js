@@ -1,4 +1,4 @@
-﻿const css=document.createElement("style");css.textContent="main input,main select{padding:9px;border:1px solid var(--line);border-radius:8px;font:inherit;width:100%}";document.head.appendChild(css);
+const css=document.createElement("style");css.textContent="main input,main select{padding:9px;border:1px solid var(--line);border-radius:8px;font:inherit;width:100%}";document.head.appendChild(css);
 const v=id=>$("#"+id).value;
 const inp=(id,ph,type="text",val="")=>`<input id="${id}" type="${type}" placeholder="${ph}" title="${ph}" value="${val}">`;
 const apiSend=async(m,p,b)=>{const r=await fetch(CFG.api+p,{method:m,headers:{Authorization:"Bearer "+token,"Content-Type":"application/json"},body:JSON.stringify(b)});
@@ -34,3 +34,8 @@ if(token)show("dash");
 
 
 async function delRes(i){const r=RES[i];if(!confirm("¿Eliminar la reserva '"+r.title+"'?"))return;try{await apiSend("DELETE",`/trips/${r.tripId}/reservations/${r.reservationId}`);loadRes()}catch(x){alert(x.message)}}
+
+const PREF_HTML=`<div class="card"><b>Mis preferencias</b><div class="grid">${inp("pa","Actividades preferidas (ej. playa, historia)")}<select id="pb"><option value="">Presupuesto: sin definir</option><option value="ECONOMICO">Económico</option><option value="MEDIO">Medio</option><option value="ALTO">Alto</option></select>${inp("pr","Restricciones (ej. vegetariano)")}${inp("pn","Notas")}</div><br><button class="btn" onclick="savePrefs()">Guardar preferencias</button> <span id="pmsg" class="mut"></span></div>`;
+const _lt=loadTrips;
+loadTrips=async function(){await _lt();$("#trips").insertAdjacentHTML("afterbegin",PREF_HTML);try{const p=await api("/preferences");$("#pa").value=p.preferred_activities||"";$("#pb").value=p.budget_level||"";$("#pr").value=p.restrictions||"";$("#pn").value=p.notes||""}catch(x){}};
+async function savePrefs(){try{await apiSend("PUT","/preferences",{preferred_activities:v("pa"),budget_level:v("pb")||undefined,restrictions:v("pr"),notes:v("pn")});$("#pmsg").textContent="Guardado"}catch(x){$("#pmsg").textContent=x.message}}

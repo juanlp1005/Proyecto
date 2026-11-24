@@ -28,7 +28,7 @@ def _fn(logical_id: str) -> str:
     return _names[logical_id]
 
 
-WRITE_OPS = {"CreateTripFn", "UpdateTripFn", "CreateItineraryFn", "UpdateItineraryFn", "CreateReservationFn", "UpdateReservationFn"}
+WRITE_OPS = {"UpdatePreferencesFn", "CreateTripFn", "UpdateTripFn", "CreateItineraryFn", "UpdateItineraryFn", "CreateReservationFn", "UpdateReservationFn"}
 STATE = {"allow_write": True}
 
 
@@ -117,6 +117,20 @@ def build_trip_tools(user_id: str) -> list:
             tripId=trip_id, reservationId=reservation_id, title=title, provider=provider,
             price=price, date=date, details=details, status=status))
 
-    return [create_trip, get_trips, update_trip, create_itinerary, update_itinerary,
+    @tool
+    def get_preferences() -> str:
+        """Consulta las preferencias de viaje guardadas del usuario (actividades, nivel de presupuesto, restricciones)."""
+        return _invoke("GetPreferencesFn", user_id, {})
+
+    @tool
+    def update_preferences(preferred_activities: Optional[str] = None, budget_level: Optional[str] = None,
+                           restrictions: Optional[str] = None, notes: Optional[str] = None) -> str:
+        """Guarda o actualiza las preferencias de viaje del usuario. budget_level: ECONOMICO, MEDIO o ALTO.
+        Solo envia los campos que cambian."""
+        return _invoke("UpdatePreferencesFn", user_id, dict(
+            preferred_activities=preferred_activities, budget_level=budget_level,
+            restrictions=restrictions, notes=notes))
+
+    return [get_preferences, update_preferences, create_trip, get_trips, update_trip, create_itinerary, update_itinerary,
             get_itinerary, create_reservation, get_reservations, update_reservation]
 

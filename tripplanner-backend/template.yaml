@@ -1,4 +1,4 @@
-﻿AWSTemplateFormatVersion: "2010-09-09"
+AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
 Description: TripPlanner AI - backend serverless (Canal 1) + Cognito
 
@@ -199,6 +199,28 @@ Resources:
         Http:
           Type: HttpApi
           Properties: { ApiId: !Ref Api, Path: "/trips/{tripId}/reservations/{reservationId}", Method: DELETE }
+  GetPreferencesFn:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: app.get_preferences
+      Policies:
+        - DynamoDBReadPolicy: { TableName: !Ref TripPlannerTable }
+      Events:
+        Http:
+          Type: HttpApi
+          Properties: { ApiId: !Ref Api, Path: /preferences, Method: GET }
+
+  UpdatePreferencesFn:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: app.update_preferences
+      Policies:
+        - DynamoDBWritePolicy: { TableName: !Ref TripPlannerTable }
+      Events:
+        Http:
+          Type: HttpApi
+          Properties: { ApiId: !Ref Api, Path: /preferences, Method: PUT }
+
 Outputs:
   ApiUrl:
     Value: !Sub https://${Api}.execute-api.${AWS::Region}.amazonaws.com

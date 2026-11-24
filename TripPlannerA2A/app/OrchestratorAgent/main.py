@@ -15,7 +15,7 @@ from trip_tools import build_trip_tools
 
 app = BedrockAgentCoreApp()
 AGENTS = {}
-WRITE_INTENT = r"\b(crea|crear|crealo|créalo|guarda|guardar|guardalo|guárdalo|registra|registrar|reserva|reservar|genera|generar|actualiza|actualizar|edita|editar|modifica|modificar|cambia|confirmo|confirmar|dale|sí|ok|listo|ese|primero|segundo|tercero|más barato|mas barato)\b"
+WRITE_INTENT = r"\b(crea|crear|crealo|créalo|guarda|guardar|guardalo|guárdalo|registra|registrar|reserva|reservar|genera|generar|actualiza|actualizar|edita|editar|modifica|modificar|cambia|confirmo|confirmar|dale|sí|ok|listo|ese|primero|segundo|tercero|más barato|mas barato|prefiero|preferencia|preferencias|recuerda|anota)\b"
 
 REGION = os.environ.get("AWS_REGION", "us-east-2")
 FLIGHTS_ARN = os.environ.get("FLIGHTS_AGENT_ARN")
@@ -135,6 +135,7 @@ def _system_prompt() -> str:
         "NUNCA enumeres vuelos ni dias en el texto y NUNCA omitas el bloque flights si consultaste vuelos. "
         "Si el usuario pidio clima, SIEMPRE emite el bloque weather con una entrada por dia (fecha, condicion, temperaturas); si el especialista no da todos los dias, repite la consulta dia por dia. En flights, airline es obligatorio: copia el nombre de la aerolinea tal como lo devolvio el especialista. "
         "En los bloques trips, itinerary y reservations copia los objetos que devolvio la tool tal cual, sin quitar campos, incluyendo tripId y reservationId. "
+        "Antes de proponer itinerarios o actividades consulta get_preferences y respeta las preferencias del usuario (actividades, nivel de presupuesto y restricciones); si el usuario te cuenta una preferencia, guardala con update_preferences. "
         "Si no hay datos que mostrar, no agregues bloques."
     )
 

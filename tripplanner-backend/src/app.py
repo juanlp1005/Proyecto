@@ -336,3 +336,42 @@ def delete_reservation(user, data):
             raise ApiError(404, "Reserva no encontrada")
         raise
     return 200, {"deleted": res_id}
+
+
+BUDGET_LEVELS = {"ECONOMICO", "MEDIO", "ALTO"}
+
+
+@endpoint
+def get_preferences(user, data):
+    r = table.get_item(Key={"PK": _pk(user), "SK": "PREF"})
+    return 200, (_clean(r["Item"]) if "Item" in r else {})
+
+
+@endpoint
+def update_preferences(user, data):
+    f = {}
+    if "preferred_activities" in data:
+        f["preferred_activities"] = _text(data.get("preferred_activities"), "preferred_activities", 300) or ""
+    if data.get("budget_level") not in (None, ""):
+        lvl = str(data["budget_level"]).upper()
+        if lvl not in BUDGET_LEVELS:
+            raise ApiError(400, "budget_level debe ser ECONOMICO, MEDIO o ALTO")
+        f["budget_level"] = lvl
+    if "restrictions" in data:
+        f["restrictions"] = _text(data.get("restrictions"), "restrictions", 300) or ""
+    if "notes" in data:
+        f["notes"] = _text(data.get("notes"), "notes", 500) or ""
+    if not f:
+        raise ApiError(400, "No hay preferencias para guardar")
+    f["updated_at"] = _now()
+    names = {f"#f{i}": k for i, k in enumerate(f)}
+    values = {f":v{i}": v for i, v in enumerate(f.values())}
+    expr = "SET " + ", ".join(f"#f{i} = :v{i}" for i in range(len(f)))
+    r = table.update_item(
+        Key={"PK": _pk(user), "SK": "PREF"},
+        UpdateExpression=expr,
+        ExpressionAttributeNames=names,
+        ExpressionAttributeValues=values,
+        ReturnValues="ALL_NEW",
+    )
+    return 200, _clean(r["Attributes"])
