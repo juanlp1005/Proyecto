@@ -1,0 +1,133 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1760" height="1150" viewBox="0 0 1760 1150" font-family="Inter, DejaVu Sans, Arial, sans-serif" xmlns:c2pa="http://c2pa.org/manifest">
+<defs>
+<marker id="a0" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#334155"/></marker>
+<marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#2563eb"/></marker>
+<marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#0f9f9a"/></marker>
+<marker id="a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#d97706"/></marker>
+<marker id="a4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#c0392b"/></marker>
+<marker id="a5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#64748b"/></marker>
+</defs>
+<rect width="1760" height="1150" fill="#ffffff"/>
+<text x="40" y="38" font-size="22" font-weight="800" fill="#10223f" text-anchor="start">TripPlanner AI · Arquitectura general</text>
+<text x="40" y="60" font-size="13" font-weight="400" fill="#64748b" text-anchor="start">AWS us-east-2 (Ohio) · dos canales independientes: operaciones de negocio y interacción agéntica</text>
+<rect x="780" y="85" width="200" height="46" rx="10" fill="#10223f" stroke="#10223f" stroke-width="1.6"/>
+<text x="880.0" y="114.0" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle">Usuario</text>
+<rect x="660" y="175" width="440" height="66" rx="10" fill="#10223f" stroke="#10223f" stroke-width="1.6"/>
+<text x="880.0" y="206.0" font-size="17" font-weight="700" fill="#ffffff" text-anchor="middle">Frontend TripPlanner AI</text>
+<text x="880.0" y="225.0" font-size="12.5" font-weight="400" fill="#ffffff" text-anchor="middle">HTML · CSS · JavaScript (index.html + extras.js)</text>
+<rect x="1300" y="175" width="400" height="66" rx="10" fill="#fff7e6" stroke="#d97706" stroke-width="1.6"/>
+<text x="1500.0" y="205.5" font-size="16" font-weight="700" fill="#92400e" text-anchor="middle">Amazon S3</text>
+<text x="1500.0" y="224.5" font-size="12.5" font-weight="400" fill="#92400e" text-anchor="middle">hosting estático del frontend</text>
+<rect x="60" y="175" width="400" height="66" rx="10" fill="#fff7e6" stroke="#d97706" stroke-width="1.6"/>
+<text x="260.0" y="205.5" font-size="16" font-weight="700" fill="#92400e" text-anchor="middle">Amazon Cognito</text>
+<text x="260.0" y="224.5" font-size="12.5" font-weight="400" fill="#92400e" text-anchor="middle">autenticación de usuarios · tokens JWT</text>
+<path d="M880 131 L880 175" fill="none" stroke="#10223f" stroke-width="2" marker-end="url(#a0)"/>
+<path d="M1300 208 L1100 208" fill="none" stroke="#d97706" stroke-width="2" marker-end="url(#a3)"/>
+<text x="1200" y="198" font-size="12" font-weight="600" fill="#d97706" text-anchor="middle">sirve</text>
+<path d="M460 208 L660 208" fill="none" stroke="#d97706" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#a3)"/>
+<text x="560" y="198" font-size="12" font-weight="600" fill="#d97706" text-anchor="middle">login · JWT</text>
+<rect x="40" y="305" width="590" height="440" rx="14" fill="#eef4ff" stroke="#2563eb" stroke-width="1.8"/>
+<text x="60" y="331" font-size="13" font-weight="800" fill="#2563eb" text-anchor="start">CANAL 1 · OPERACIONES DE NEGOCIO</text>
+<rect x="660" y="305" width="1060" height="440" rx="14" fill="#e8f8f6" stroke="#0f9f9a" stroke-width="1.8"/>
+<text x="680" y="331" font-size="13" font-weight="800" fill="#0f9f9a" text-anchor="start">CANAL 2 · INTERACCIÓN AGÉNTICA</text>
+<path d="M760 241 L760 275 L335 275 L335 305" fill="none" stroke="#2563eb" stroke-width="2.5" marker-end="url(#a1)"/>
+<text x="550" y="267" font-size="12" font-weight="600" fill="#2563eb" text-anchor="middle">HTTPS · REST/JSON + JWT</text>
+<path d="M1000 241 L1000 275 L1190 275 L1190 305" fill="none" stroke="#0f9f9a" stroke-width="2.5" marker-end="url(#a2)"/>
+<text x="1100" y="267" font-size="12" font-weight="600" fill="#0f9f9a" text-anchor="start">HTTP streaming + JWT (directo, sin API Gateway)</text>
+<rect x="70" y="345" width="530" height="84" rx="10" fill="#2563eb" stroke="#2563eb" stroke-width="1.6"/>
+<text x="335.0" y="384.0" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">Amazon API Gateway (HTTP API)</text>
+<text x="335.0" y="403.0" font-size="12.5" font-weight="400" fill="#ffffff" text-anchor="middle">autorizador JWT (Cognito) · CORS restringido · throttling</text>
+<path d="M335 429 L335 462" fill="none" stroke="#ffffff" stroke-width="2" marker-end="url(#a0)"/>
+<rect x="70" y="462" width="530" height="258" rx="10" fill="#ffffff" stroke="#2563eb" stroke-width="1.6"/>
+<path d="M335 429 L335 462" fill="none" stroke="#2563eb" stroke-width="2.5" marker-end="url(#a1)"/>
+<text x="372" y="450" font-size="12" font-weight="600" fill="#2563eb" text-anchor="start">invoca</text>
+<text x="335" y="490" font-size="15" font-weight="700" fill="#2563eb" text-anchor="middle">AWS Lambda · lógica de negocio y validación</text>
+<text x="335" y="510" font-size="12.5" font-weight="400" fill="#64748b" text-anchor="middle">13 funciones Python · un rol IAM por función</text>
+<rect x="90" y="527" width="490" height="34" rx="8" fill="#eef4ff"/>
+<text x="104" y="549" font-size="13" font-weight="700" fill="#10223f" text-anchor="start">Viajes</text>
+<text x="205" y="549" font-size="11.5" font-weight="400" fill="#1e293b" text-anchor="start" font-family="DejaVu Sans Mono, monospace">CreateTrip · GetTrips · UpdateTrip</text>
+<rect x="90" y="569" width="490" height="34" rx="8" fill="#eef4ff"/>
+<text x="104" y="591" font-size="13" font-weight="700" fill="#10223f" text-anchor="start">Itinerarios</text>
+<text x="205" y="591" font-size="11.5" font-weight="400" fill="#1e293b" text-anchor="start" font-family="DejaVu Sans Mono, monospace">CreateItinerary · GetItinerary · UpdateItinerary</text>
+<rect x="90" y="611" width="490" height="34" rx="8" fill="#eef4ff"/>
+<text x="104" y="633" font-size="13" font-weight="700" fill="#10223f" text-anchor="start">Reservas</text>
+<text x="205" y="633" font-size="11.5" font-weight="400" fill="#1e293b" text-anchor="start" font-family="DejaVu Sans Mono, monospace">Create · Get · Update · DeleteReservation</text>
+<rect x="90" y="653" width="490" height="34" rx="8" fill="#eef4ff"/>
+<text x="104" y="675" font-size="13" font-weight="700" fill="#10223f" text-anchor="start">Preferencias</text>
+<text x="205" y="675" font-size="11.5" font-weight="400" fill="#1e293b" text-anchor="start" font-family="DejaVu Sans Mono, monospace">GetPreferences · UpdatePreferences</text>
+<rect x="680" y="345" width="1020" height="385" rx="12" fill="none" stroke="#0f9f9a" stroke-width="1.6" stroke-dasharray="7 5"/>
+<text x="695" y="368" font-size="12.5" font-weight="700" fill="#0f9f9a" text-anchor="start">Amazon Bedrock AgentCore Runtime · agentes Strands (CodeZip, Python)</text>
+<rect x="1030" y="385" width="320" height="66" rx="10" fill="#0f9f9a" stroke="#0f9f9a" stroke-width="1.6"/>
+<text x="1190.0" y="415.0" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">Orchestrator Agent</text>
+<text x="1190.0" y="434.0" font-size="12.5" font-weight="400" fill="#ffffff" text-anchor="middle">interpreta · decide · coordina (HTTP)</text>
+<rect x="1360" y="385" width="320" height="66" rx="10" fill="#ffffff" stroke="#0f9f9a" stroke-width="1.6"/>
+<text x="1520.0" y="415.0" font-size="15" font-weight="700" fill="#10223f" text-anchor="middle">Google Gemini</text>
+<text x="1520.0" y="434.0" font-size="12.5" font-weight="400" fill="#64748b" text-anchor="middle">LLM de los agentes · key en AgentCore Identity</text>
+<rect x="700" y="505" width="320" height="66" rx="10" fill="#14b8b0" stroke="#0f9f9a" stroke-width="1.6"/>
+<text x="860.0" y="535.0" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">Flights Agent</text>
+<text x="860.0" y="554.0" font-size="12.5" font-weight="400" fill="#ffffff" text-anchor="middle">especialista en vuelos (A2A)</text>
+<rect x="1030" y="505" width="320" height="66" rx="10" fill="#14b8b0" stroke="#0f9f9a" stroke-width="1.6"/>
+<text x="1190.0" y="535.0" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">Weather Agent</text>
+<text x="1190.0" y="554.0" font-size="12.5" font-weight="400" fill="#ffffff" text-anchor="middle">especialista en clima (A2A)</text>
+<rect x="1360" y="505" width="320" height="66" rx="10" fill="#14b8b0" stroke="#0f9f9a" stroke-width="1.6"/>
+<text x="1520.0" y="535.0" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">Tools de negocio</text>
+<text x="1520.0" y="554.0" font-size="12.5" font-weight="400" fill="#ffffff" text-anchor="middle">viajes · itinerarios · reservas · preferencias</text>
+<path d="M1090 451 L860.0 505" fill="none" stroke="#0f9f9a" stroke-width="2" marker-end="url(#a2)"/>
+<text x="900.0" y="470" font-size="12" font-weight="600" fill="#0f9f9a" text-anchor="end">A2A · SigV4</text>
+<path d="M1190.0 451 L1190.0 505" fill="none" stroke="#0f9f9a" stroke-width="2" marker-end="url(#a2)"/>
+<text x="1198.0" y="481" font-size="12" font-weight="600" fill="#0f9f9a" text-anchor="start">A2A · SigV4</text>
+<path d="M1290 451 L1520.0 505" fill="none" stroke="#0f9f9a" stroke-width="2" marker-end="url(#a2)"/>
+<text x="1480.0" y="470" font-size="12" font-weight="600" fill="#0f9f9a" text-anchor="start">tool call</text>
+<rect x="700" y="640" width="320" height="70" rx="10" fill="#ffffff" stroke="#0f9f9a" stroke-width="1.6"/>
+<text x="860.0" y="672.0" font-size="15" font-weight="700" fill="#0f9f9a" text-anchor="middle">MCP de vuelos · Kiwi.com</text>
+<text x="860.0" y="691.0" font-size="12.5" font-weight="400" fill="#1e293b" text-anchor="middle">search-flight · remoto, Streamable HTTP</text>
+<rect x="1030" y="640" width="320" height="70" rx="10" fill="#ffffff" stroke="#0f9f9a" stroke-width="1.6"/>
+<text x="1190.0" y="672.0" font-size="15" font-weight="700" fill="#0f9f9a" text-anchor="middle">MCP de clima · Open-Meteo</text>
+<text x="1190.0" y="691.0" font-size="12.5" font-weight="400" fill="#1e293b" text-anchor="middle">get_forecast · stdio en el runtime</text>
+<rect x="1360" y="640" width="320" height="70" rx="10" fill="#2563eb" stroke="#2563eb" stroke-width="1.6"/>
+<text x="1520.0" y="672.0" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">AWS Lambda</text>
+<text x="1520.0" y="691.0" font-size="12.5" font-weight="400" fill="#ffffff" text-anchor="middle">las mismas 13 funciones del Canal 1</text>
+<path d="M860.0 571 L860.0 640" fill="none" stroke="#0f9f9a" stroke-width="2" marker-end="url(#a2)"/>
+<text x="868.0" y="610" font-size="12" font-weight="600" fill="#0f9f9a" text-anchor="start">MCP</text>
+<path d="M1190.0 571 L1190.0 640" fill="none" stroke="#0f9f9a" stroke-width="2" marker-end="url(#a2)"/>
+<text x="1198.0" y="610" font-size="12" font-weight="600" fill="#0f9f9a" text-anchor="start">MCP</text>
+<path d="M1520.0 571 L1520.0 640" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#a1)"/>
+<text x="1528.0" y="610" font-size="12" font-weight="600" fill="#2563eb" text-anchor="start">invoca</text>
+<rect x="40" y="800" width="1680" height="96" rx="12" fill="#10223f"/>
+<text x="880" y="830" font-size="16" font-weight="800" fill="#ffffff" text-anchor="middle">Amazon DynamoDB · persistencia compartida (fuente de verdad)</text>
+<text x="880" y="850" font-size="12.5" font-weight="400" fill="#cbd5e1" text-anchor="middle">tabla tripplanner-TripPlannerTable-HBP9LO1T4TON</text>
+<rect x="437.0" y="860" width="120" height="26" rx="13" fill="#c7d7f5"/>
+<text x="497.0" y="878" font-size="12.5" font-weight="600" fill="#10223f" text-anchor="middle">Usuarios</text>
+<rect x="571.0" y="860" width="140" height="26" rx="13" fill="#c7d7f5"/>
+<text x="641.0" y="878" font-size="12.5" font-weight="600" fill="#10223f" text-anchor="middle">Preferencias</text>
+<rect x="725.0" y="860" width="110" height="26" rx="13" fill="#c7d7f5"/>
+<text x="780.0" y="878" font-size="12.5" font-weight="600" fill="#10223f" text-anchor="middle">Viajes</text>
+<rect x="849.0" y="860" width="130" height="26" rx="13" fill="#c7d7f5"/>
+<text x="914.0" y="878" font-size="12.5" font-weight="600" fill="#10223f" text-anchor="middle">Itinerarios</text>
+<rect x="993.0" y="860" width="330" height="26" rx="13" fill="#c7d7f5"/>
+<text x="1158.0" y="878" font-size="12.5" font-weight="600" fill="#10223f" text-anchor="middle">Reservas (simulada · pendiente · confirmada)</text>
+<path d="M335 745 L335 800" fill="none" stroke="#2563eb" stroke-width="2.5" marker-end="url(#a1)"/>
+<text x="350" y="775" font-size="12" font-weight="600" fill="#2563eb" text-anchor="start">lectura / escritura</text>
+<path d="M1520.0 710 L1520.0 745 L1520.0 800" fill="none" stroke="#2563eb" stroke-width="2.5" marker-end="url(#a1)"/>
+<text x="1532.0" y="775" font-size="12" font-weight="600" fill="#2563eb" text-anchor="start">lectura / escritura</text>
+<rect x="40" y="920" width="1680" height="42" rx="10" fill="#fff5f5" stroke="#c0392b" stroke-width="1.6" stroke-dasharray="7 5"/>
+<text x="880" y="947" font-size="14" font-weight="700" fill="#c0392b" text-anchor="middle">IAM · roles y políticas de mínimo privilegio para cada Lambda, AgentCore Runtime, API Gateway y S3</text>
+<rect x="40" y="985" width="830" height="54" rx="10" fill="#f1f5f9" stroke="#64748b" stroke-width="1.6"/>
+<text x="455.0" y="1008.5" font-size="14" font-weight="700" fill="#10223f" text-anchor="middle">Backend serverless · AWS SAM</text>
+<text x="455.0" y="1027.5" font-size="12.5" font-weight="400" fill="#334155" text-anchor="middle">stack CloudFormation «tripplanner» (API, Lambdas, DynamoDB, Cognito)</text>
+<rect x="890" y="985" width="830" height="54" rx="10" fill="#f1f5f9" stroke="#64748b" stroke-width="1.6"/>
+<text x="1305.0" y="1008.5" font-size="14" font-weight="700" fill="#10223f" text-anchor="middle">Agentes · agentcore CLI (CDK)</text>
+<text x="1305.0" y="1027.5" font-size="12.5" font-weight="400" fill="#334155" text-anchor="middle">stack CloudFormation «AgentCore-TripPlannerA2A-default»</text>
+<text x="40" y="1075" font-size="12" font-weight="800" fill="#64748b" text-anchor="start">LEYENDA</text>
+<rect x="40" y="1085" width="16" height="16" rx="3" fill="#10223f"/>
+<text x="64" y="1098" font-size="12.5" font-weight="400" fill="#1e293b" text-anchor="start">Usuario · frontend · datos</text>
+<rect x="310" y="1085" width="16" height="16" rx="3" fill="#2563eb"/>
+<text x="334" y="1098" font-size="12.5" font-weight="400" fill="#1e293b" text-anchor="start">Canal 1 · backend serverless</text>
+<rect x="580" y="1085" width="16" height="16" rx="3" fill="#0f9f9a"/>
+<text x="604" y="1098" font-size="12.5" font-weight="400" fill="#1e293b" text-anchor="start">Canal 2 · capa agéntica</text>
+<rect x="850" y="1085" width="16" height="16" rx="3" fill="#d97706"/>
+<text x="874" y="1098" font-size="12.5" font-weight="400" fill="#1e293b" text-anchor="start">Hosting y autenticación</text>
+<rect x="1120" y="1085" width="16" height="16" rx="3" fill="#c0392b"/>
+<text x="1144" y="1098" font-size="12.5" font-weight="400" fill="#1e293b" text-anchor="start">Seguridad (IAM)</text>
+<text x="40" y="1125" font-size="12" font-weight="400" fill="#64748b" text-anchor="start" font-style="italic">Las flechas indican la dirección de la petición. El endpoint de HTTP streaming de AgentCore se consume directamente desde el frontend, sin API Gateway.</text>
+<metadata><c2pa:manifest>AAAWgmp1bWIAAAAeanVtZGMycGEAEQAQgAAAqgA4m3EDYzJwYQAAABZcanVtYgAAAEdqdW1kYzJtYQARABCAAACqADibcQN1cm46YzJwYTphZmQ5ZGVjZi1hYjU0LTQ2OGQtYjhiZi1jZWYxOWJlYjViOWUAAAADl2p1bWIAAAApanVtZGMyYXMAEQAQgAAAqgA4m3EDYzJwYS5hc3NlcnRpb25zAAAAALxqdW1iAAAARGp1bWRjYm9yABEAEIAAAKoAOJtxE2MycGEuaW5ncmVkaWVudC52MwAAAAAYYzJzaLCFRsYKgglhZ2IDt05YtE8AAABwY2JvcqNpZGM6Zm9ybWF0bWltYWdlL3N2Zyt4bWxqaW5zdGFuY2VJRHgseG1wOmlpZDoxYjEwOTdmNC1lYzgxLTQ1ZWItYWJiMS05NjJlNTY3ZjQ2NzRscmVsYXRpb25zaGlwaHBhcmVudE9mAAAB4mp1bWIAAABBanVtZGNib3IAEQAQgAAAqgA4m3ETYzJwYS5hY3Rpb25zLnYyAAAAABhjMnNoyXbSJVABtLX/J0UJ02fSuQAAAZljYm9yomdhY3Rpb25zgqJmYWN0aW9ua2MycGEub3BlbmVkanBhcmFtZXRlcnOha2luZ3JlZGllbnRzgaJjdXJseC1zZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmluZ3JlZGllbnQudjNkaGFzaFggxHIjRClkmPenspQjJ5Xr/tqLgWriiRI9tElRmpEPVcSkZmFjdGlvbngdY29tLmFudGhyb3BpYy5jbGF1ZGUucHJvdmlkZWRqcGFyYW1ldGVyc6F4H2NvbS5hbnRocm9waWMub3JpZ2luLWNvbmZpZGVuY2VndW5rbm93bmtkZXNjcmlwdGlvbnhmQ2xhdWRlIHByb3ZpZGVkIHRoaXMgZmlsZSBhdCB0aGUgcmVxdWVzdCBvZiBhIHVzZXIgYW5kIG1heSBoYXZlIGNyZWF0ZWQgb3IgbW9kaWZpZWQgdGhlIGZpbGUgY29udGVudHMubXNvZnR3YXJlQWdlbnShZG5hbWVmQ2xhdWRlcmFsbEFjdGlvbnNJbmNsdWRlZPUAAADIanVtYgAAAEBqdW1kY2JvcgARABCAAACqADibcRNjMnBhLmhhc2guZGF0YQAAAAAYYzJzaL6pXb5dJ3k9c1p0/7Ob+rkAAACAY2JvcqVjYWxnZnNoYTI1NmNwYWRMAAAAAAAAAAAAAAAAZGhhc2hYIAoizEYRe+tF59wvqPSEISmHZF6Wp81PHK2NthWgpYgRZG5hbWVuanVtYmYgbWFuaWZlc3RqZXhjbHVzaW9uc4GiZXN0YXJ0GT3nZmxlbmd0aBkeBAAAAj5qdW1iAAAAJ2p1bWRjMmNsABEAEIAAAKoAOJtxA2MycGEuY2xhaW0udjIAAAACD2Nib3KlY2FsZ2ZzaGEyNTZpc2lnbmF0dXJleE1zZWxmI2p1bWJmPS9jMnBhL3VybjpjMnBhOmFmZDlkZWNmLWFiNTQtNDY4ZC1iOGJmLWNlZjE5YmViNWI5ZS9jMnBhLnNpZ25hdHVyZWppbnN0YW5jZUlEeCx4bXA6aWlkOjViNTdlYTljLTNhNGYtNGE1NC05ODZlLWNmMGE5YWY1ODM1MnJjcmVhdGVkX2Fzc2VydGlvbnODomN1cmx4LXNlbGYjanVtYmY9YzJwYS5hc3NlcnRpb25zL2MycGEuaW5ncmVkaWVudC52M2RoYXNoWCDEciNEKWSY96eylCMnlev+2ouBauKJEj20SVGakQ9VxKJjdXJseCpzZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmFjdGlvbnMudjJkaGFzaFggUOcUWsted52L/WelGjq5GtZPkwn2NfbxpKIKrcIaNbWiY3VybHgpc2VsZiNqdW1iZj1jMnBhLmFzc2VydGlvbnMvYzJwYS5oYXNoLmRhdGFkaGFzaFggh6RMkuqbh10MbLgU4KwXEVH9nhlNt0tWt5M8VuJ174h0Y2xhaW1fZ2VuZXJhdG9yX2luZm+jZG5hbWVvQW50aHJvcGljIEZpbGVzZ3ZlcnNpb25lMS4wLjBrc3BlY1ZlcnNpb25lMi40LjAAABA4anVtYgAAAChqdW1kYzJjcwARABCAAACqADibcQNjMnBhLnNpZ25hdHVyZQAAABAIY2JvctKEWQISogEmGCFZAgowggIGMIIBjaADAgECAhRA5aAK7sI50L64g/oGQgU9Z1UTADAKBggqhkjOPQQDAzBJMRcwFQYDVQQKEw5BbnRocm9waWMsIFBCQzEuMCwGA1UEAxMlQW50aHJvcGljIENvbnRlbnQgQ3JlZGVudGlhbHMgUm9vdCBDQTAeFw0yNjA4MDcxODQzNTZaFw0yODA4MDYxOTQzNTZaMEQxFzAVBgNVBAoTDkFudGhyb3BpYywgUEJDMSkwJwYDVQQDEyBBbnRocm9waWMgQ2xhdWRlIENvbnRlbnQgU2lnbmluZzBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABJh6CmvLUBgFFNU0vUKlOVtE6djd17L5SuwX0LemFisBM3dkd/3cyjxFA3Qo5S46fX0/ihY0VZ7mfb9KF703t5OjWDBWMA4GA1UdDwEB/wQEAwIHgDAVBgNVHSUEDjAMBgorBgEEAYPoXgIBMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUzlHiBIFOZFsj+OPEz5o+nMHXXMIwCgYIKoZIzj0EAwMDZwAwZAIwMXMdFJ4BetLLVY7ORuE9noqbbAZOZn/aArXyTwFAZfKrPzxF2vPoJNf1+UCdg1XGAjBwX1zd9WGqYkqmL5SFqw1QySjr1zJfpJM9+1rdDwSPLMOPOjKuiXjoU/pUUeG9RwmhY3BhZFkNngAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPZYQP/8+uUM0+uOTJ0qkuKUBavTCe5zFY2URvvbwbhnfVahs4iIseVRJJI7QlEXUTypcXO6jUhb2eu6zYswn4anosc=</c2pa:manifest></metadata></svg>

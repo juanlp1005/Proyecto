@@ -6,6 +6,8 @@ frontend, backend serverless y persistencia en DynamoDB.
 
 ## 1. Arquitectura
 
+![Arquitectura de TripPlanner AI](docs/diagrama-arquitectura-tripplanner.png)
+
 ```mermaid
 flowchart TB
   U["Usuario"] --> FE["Frontend HTML/JS en S3"]
