@@ -140,6 +140,22 @@ Además, `ask_flights` y `ask_weather` delegan en los agentes especialistas por 
 
 **Limitaciones conocidas:** no se usa aún la memoria gestionada de AgentCore (el contexto se mantiene enviando el historial reciente en cada petición); los precios de vuelos vienen en EUR de la fuente; la fuente de clima no siempre entrega todos los días ni la probabilidad de lluvia (se muestra «s/d»).
 
+### Weather Agent y MCP de clima
+El Weather Agent obtiene datos reales mediante un servidor MCP de clima
+(`open-meteo-mcp`, basado en Open-Meteo, sin API key). El servidor se ejecuta como
+subproceso (transporte stdio) dentro del runtime de AgentCore y el agente lo consume
+con el cliente MCP nativo de Strands (`MCPClient`).
+
+Las herramientas MCP se descubren en tiempo de ejecución (`tools/list`). El agente usa
+`get_current_weather` y `get_current_datetime`, y una herramienta propia
+`get_forecast` que invoca `get_weather_byDateTimeRange` y resume la respuesta horaria
+en un pronóstico diario (mínima, máxima, humedad, probabilidad y total de lluvia),
+convirtiendo las fechas de UTC a hora de Colombia. Así el modelo recibe poco texto y
+no inventa datos. Si el MCP no está disponible, el agente lo informa en lugar de
+simular valores.
+
+Limitación: Open-Meteo solo ofrece pronóstico para los próximos ~16 días.
+
 ## 7. Instrucciones de ejecución (desde cero)
 
 Requisitos: AWS CLI configurado, SAM CLI, Docker Desktop, Node.js, AgentCore CLI y una API key de Gemini.
