@@ -14,6 +14,8 @@ dependencies = [
     "bedrock-agentcore[a2a] >= 1.9.1",
     "botocore[crt] >= 1.35.0",
     "google-genai >= 1.0.0",
+    "mcp>=1.12,<2",
+    "open-meteo-mcp>=0.2.0",
     "strands-agents >= 1.13.0",
 ]
 
