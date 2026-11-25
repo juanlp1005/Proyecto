@@ -177,3 +177,35 @@ Requisitos: AWS CLI configurado, SAM CLI, Docker Desktop, Node.js, AgentCore CLI
 ## Seguridad
 
 IAM de mínimo privilegio por Lambda y agente; sin credenciales AWS en el navegador; validación en Lambda; control de acceso por usuario; JWT en API Gateway y en el runtime; CORS restringido; throttling; errores sin detalles internos; sin datos de tarjeta; `.env.local` fuera del repositorio.
+
+## Evidencias
+
+Capturas de la consola de AWS (cuenta propia, región us-east-2 · Ohio).
+
+**Bedrock AgentCore: los 3 agentes activos**
+
+![AgentCore: 3 agentes activos](docs/evidencias/agentcore-3-agentes-activos.png)
+
+**Amazon S3: bucket del frontend**
+
+![S3: frontend](docs/evidencias/s3-frontend.png)
+
+**Amazon API Gateway: rutas**
+
+![API Gateway: rutas](docs/evidencias/api-gateway-rutas.png)
+
+**AWS Lambda: funciones del backend**
+
+![Lambdas](docs/evidencias/lambdas.png)
+
+**Amazon DynamoDB: datos del ensayo**
+
+![DynamoDB: datos](docs/evidencias/dynamodb-datos.png)
+
+**AWS CloudFormation: stacks**
+
+![CloudFormation: stack AgentCore](docs/evidencias/cloudformation-stacks1.png)
+
+![CloudFormation: stack tripplanner](docs/evidencias/cloudformation-stacks2.png)
+
+![CloudFormation: recursos del stack tripplanner](docs/evidencias/cloudformation-stacks-resources.png)
